@@ -4,12 +4,12 @@ from typing import List
 
 class Solution:
     def findMaxAverage(self, nums: List[int], k: int) -> float:
-        partial = sum(x for x in nums[0:k])
-        m = partial
-        for r in range(k, len(nums)):
-            partial += nums[r] - nums[r - k]
-            m = max(m, partial)
-        return m / k
+        ans = sum(nums[:k])
+        tmp = ans
+        for i in range(k, len(nums)):
+            tmp = tmp - nums[i - k] + nums[i]
+            ans = max(ans, tmp)
+        return ans / k
 
 
 if __name__ == '__main__':
