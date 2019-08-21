@@ -10,9 +10,8 @@ class Solution:
         print(round)
         ans = [0] * num_people
         if round:
-            firstN = 1 + (round - 1) * num_people
-            sumN = firstN * (firstN + 1) // 2
-            ans[0] = sumN - (round - 1) * num_people
+            ans[0] = 1 + (round - 1) * num_people
+            print(ans[0])
             for i in range(1,num_people):
                 ans[i] = ans[i - 1] + round
             cur = ans[0] + num_people
@@ -20,9 +19,9 @@ class Solution:
         else:
             cur = 1
             remain = candies
-        print(cur,remain,ans)
         i = 0
-        while remain:
+        print(sum(ans),remain)
+        while remain>0:
             if remain >= cur:
                 ans[i] += cur
                 i += 1
@@ -31,10 +30,10 @@ class Solution:
             else:
                 ans[i] += remain
                 break
-        print(ans)
+        return ans
 
 s = Solution()
-s.distributeCandies(10**8,999)
+print(s.distributeCandies(100000,1000))
 
 
 # -b + sqrt(b^2 - 4ac) / 2a
