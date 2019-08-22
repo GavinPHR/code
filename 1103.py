@@ -4,21 +4,25 @@ import math
 
 class Solution:
     def distributeCandies(self, candies: int, num_people: int) -> List[int]:
-        n = (-1+math.sqrt(1+4*(candies*2)))//2
+        n = (-1+math.sqrt(1+4*(candies*2)))/2
         print(n)
-        round = n // num_people
+        round = int(n // num_people)
         print(round)
         ans = [0] * num_people
         if round:
-            ans[0] = 1 + (round - 1) * num_people
+            tmp = 1
+            for _ in range(round):
+                ans[0] += tmp
+                tmp += num_people
             print(ans[0])
             for i in range(1,num_people):
                 ans[i] = ans[i - 1] + round
-            cur = ans[0] + num_people
+            cur = round * num_people + 1
             remain = candies - sum(ans)
         else:
             cur = 1
             remain = candies
+        print(ans)
         i = 0
         print(sum(ans),remain)
         while remain>0:
@@ -33,7 +37,7 @@ class Solution:
         return ans
 
 s = Solution()
-print(s.distributeCandies(100000,1000))
+print(s.distributeCandies(1000000000,1000))
 
 
 # -b + sqrt(b^2 - 4ac) / 2a
