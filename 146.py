@@ -1,40 +1,59 @@
 # LRU Cache
 from typing import List
 
+class Node:
+    def __init__(self, key, val):
+        self.next = None
+        self.prev = None
+        self.key = key
+        self.val = val
+
+    def pop(self):
+        self.prev.next = self.next
+        self.next.prev = self.prev
+        return self
+
+    def insert(self, n):
+        tmp = self.next
+        self.next = n
+        n.prev = self
+        n.next = tmp
+        tmp.prev = n
+        return
 
 class LRUCache:
 
     def __init__(self, capacity: int):
-        self.d = {}
+        self.table = {}
         self.capacity = capacity
-        self.current = 0
-        self.n = {}
-        self.m = 0
+        self.cacheH = Node(None, None)
+        self.cacheT = Node(None, None)
+        self.cacheH.next = self.cacheT
+        self.cacheT.prev = self.cacheH
 
     def get(self, key: int) -> int:
-        if key in self.d:
-            self.n[key] = self.m
-            self.m += 1
-            return self.d[key]
-        else: return -1
+        if key not in self.table: return -1
+        self.cacheH.insert(self.table[key].pop())
+        return self.cacheH.next.val
 
     def put(self, key: int, value: int) -> None:
-        if key in self.d:
-            self.d[key] = value
-            self.n[key] = self.m
-            self.m += 1
-        elif self.current == self.capacity:
-            k = min(self.d, key=self.n.get)
-            del self.d[k]
-            self.d[key] = value
-            self.n[key] = self.m
-            self.m += 1
+        if key in self.table:
+            n = self.table[key]
+            n.val = value
+            self.cacheH.insert(n.pop())
+        elif len(self.table) < self.capacity:
+            n = Node(key, value)
+            self.cacheH.insert(n)
+            self.table[key] = n
         else:
-            self.d[key] = value
-            self.current += 1
-            self.n[key] = self.m
-            self.m += 1
+            n = self.cacheT.prev.pop()
+            del self.table[n.key]
+            n = Node(key, value)
+            self.cacheH.insert(n)
+            self.table[key] = n
         return
+
+
 
 cache = LRUCache(2)
 
