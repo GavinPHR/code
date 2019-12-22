@@ -77,10 +77,5 @@ class FSM:
 
 s = Solution()
 print(s.isMatch("ab",".*c"))
-# print(s.isMatch("aaa","aaaa"))
-# f = FSM("c*a*b")
-# print(f.delta)
-# print(f.transition("a"))
-# print(f.currentState)
 
 
